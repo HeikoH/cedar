@@ -201,7 +201,7 @@ var Cedar = function Cedar(options){
 Cedar.prototype.baseUrl = baseUrl;
 
 // default pre-defined chart types
-Cedar.prototype.chartTypes = ['bar', 'bar-horizontal', 'bubble', 'pie', 'scatter', 'time'];
+Cedar.prototype.chartTypes = ['bar', 'bar-horizontal', 'bubble', 'histogram', 'pie', 'scatter', 'time'];
 
 /**
  * Inspect the current state of the object
