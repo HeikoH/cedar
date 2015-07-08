@@ -65,7 +65,7 @@ var Cedar = function Cedar(options){
   // Cedar configuration such as size
   this.width = undefined;
   this.height = undefined;
-  this.autolabels = false;
+  this.autolabels = true;
 
   // Array to hold event handlers
   this._events = [];
@@ -248,7 +248,7 @@ Cedar.prototype.show = function(options){
     this._renderer = options.renderer || "canvas"; //default to canvas
     this.width = options.width || undefined; // if not set in API, always base on current div size
     this.height = options.height || undefined;
-    this.autolabels = options.autolabels || false;
+    this.autolabels = options.autolabels || true;
 
     //hold onto the token
     if(options.token){
