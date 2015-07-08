@@ -13,58 +13,12 @@ layout: example.hbs
 {{#markdown}}
 ```js
 
-  var chart = new Cedar({"type":"time"});
-
-  var dataset = {
-    "url":"http://services.arcgis.com/bkrWlSKcjUDFDtgw/arcgis/rest/services/It's_a_Tornado_Map/FeatureServer/0",
-    "mappings":{
-      "time": {"field":"Date"},
-      "value": {"field":"Injuries"},
-      "sort":"Date"
-
-    }
-  };
-  var tooltip = {
-    "title": "{Year}",
-    "content": "{Injuries} injuries<br/>{Fatalities} fatalities"
-  };
-
-  chart.dataset = dataset;
-  //chart.dataset.mappings.sort = "DATE";
-  chart.show({
-    elementId: "#chart",
-  }); 
-
-  chart.on('mouseover', function(event,data){
-    console.log("event", event);
-    console.log("data", data);
-
-      var cedartip = document.getElementById('cedar-tooltip');
-      cedartip.style.top = event.pageY + "px";
-      cedartip.style.left = event.pageX + "px";
-      cedartip.style.display = "block";
-      var content = "<span class='title'>" + tooltip.title + "</span><br />";
-      content += "<p class='content'>" + tooltip.content + "</p>";
-
-      cedartip.innerHTML = content.replace( /\{(\w+)\}/g, function replacer(match, $1){
-        return data[$1];
-      } );
-    });
-  chart.on('mouseout', function(event,data){
-      var tooltip = document.getElementById('cedar-tooltip');
-      tooltip.style.top = event.pageY+10 + "px";
-      tooltip.style.left = event.pageX+10 + "px";
-      tooltip.style.display = "none";
-    })
-
-```
-{{/markdown}}
-<script>
+  var tornados = {"features":[{"attributes":{"Injuries":1733,"Fatalities":271,"Date":-504921600000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":-473385600000}},{"attributes":{"Injuries":553,"Fatalities":100,"Date":-441849600000}},{"attributes":{"Injuries":340,"Fatalities":18,"Date":-410227200000}},{"attributes":{"Injuries":316,"Fatalities":55,"Date":-378691200000}},{"attributes":{"Injuries":74,"Fatalities":21,"Date":-347155200000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":-315619200000}},{"attributes":{"Injuries":81,"Fatalities":5,"Date":-283996800000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":-252460800000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":-220924800000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":-189388800000}},{"attributes":{"Injuries":161,"Fatalities":11,"Date":-157766400000}},{"attributes":{"Injuries":1,"Fatalities":0,"Date":-126230400000}},{"attributes":{"Injuries":1140,"Fatalities":80,"Date":-94694400000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":-63158400000}},{"attributes":{"Injuries":861,"Fatalities":34,"Date":-31536000000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":0}},{"attributes":{"Injuries":500,"Fatalities":26,"Date":31536000000}},{"attributes":{"Injuries":510,"Fatalities":47,"Date":63072000000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":94694400000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":126230400000}},{"attributes":{"Injuries":2445,"Fatalities":148,"Date":157766400000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":189302400000}},{"attributes":{"Injuries":84,"Fatalities":2,"Date":220924800000}},{"attributes":{"Injuries":130,"Fatalities":22,"Date":252460800000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":283996800000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":315532800000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":347155200000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":378691200000}},{"attributes":{"Injuries":29,"Fatalities":0,"Date":410227200000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":441763200000}},{"attributes":{"Injuries":200,"Fatalities":9,"Date":473385600000}},{"attributes":{"Injuries":310,"Fatalities":18,"Date":504921600000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":536457600000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":567993600000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":599616000000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":631152000000}},{"attributes":{"Injuries":410,"Fatalities":31,"Date":662688000000}},{"attributes":{"Injuries":225,"Fatalities":17,"Date":694224000000}},{"attributes":{"Injuries":35,"Fatalities":1,"Date":725846400000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":757382400000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":788918400000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":820454400000}},{"attributes":{"Injuries":12,"Fatalities":0,"Date":852076800000}},{"attributes":{"Injuries":12,"Fatalities":27,"Date":883612800000}},{"attributes":{"Injuries":295,"Fatalities":35,"Date":915148800000}},{"attributes":{"Injuries":583,"Fatalities":36,"Date":946684800000}}]};
   
   var chart = new Cedar({"type":"time"});
 
   var dataset = {
-    "url":"http://services.arcgis.com/bkrWlSKcjUDFDtgw/arcgis/rest/services/It's_a_Tornado_Map/FeatureServer/0",
+    "data": tornados,
     "mappings":{
       "time": {"field":"Date"},
       "value": {"field":"Injuries"},
@@ -73,7 +27,7 @@ layout: example.hbs
     }
   };
   var tooltip = {
-    "title": "{Year}",
+    "title": "{Date}",
     "content": "{Injuries} injuries<br/>{Fatalities} fatalities"
   };
 
@@ -81,28 +35,86 @@ layout: example.hbs
   //chart.dataset.mappings.sort = "DATE";
   chart.show({
     elementId: "#chart",
+    autolabels: false
   }); 
 
   chart.on('mouseover', function(event,data){
     console.log("event", event);
     console.log("data", data);
 
-      var cedartip = document.getElementById('cedar-tooltip');
-      cedartip.style.top = event.pageY + "px";
-      cedartip.style.left = event.pageX + "px";
-      cedartip.style.display = "block";
-      var content = "<span class='title'>" + tooltip.title + "</span><br />";
-      content += "<p class='content'>" + tooltip.content + "</p>";
+    var cedartip = document.getElementById('cedar-tooltip');
+    cedartip.style.top = event.pageY + "px";
+    cedartip.style.left = event.pageX + "px";
+    cedartip.style.display = "block";
+    var content = "<span class='title'>" + tooltip.title + "</span><br />";
+    content += "<p class='content'>" + tooltip.content + "</p>";
 
-      cedartip.innerHTML = content.replace( /\{(\w+)\}/g, function replacer(match, $1){
-        return data[$1];
-      } );
+    cedartip.innerHTML = content.replace( /\{(\w+)\}/g, function replacer(match, $1){
+      if ($1 === 'Date') {
+        return new Date(data[$1]).getFullYear();
+      }
+      return data[$1];
     });
+  });
   chart.on('mouseout', function(event,data){
-      var tooltip = document.getElementById('cedar-tooltip');
-      tooltip.style.top = event.pageY+10 + "px";
-      tooltip.style.left = event.pageX+10 + "px";
-      tooltip.style.display = "none";
-    })
+    var tooltip = document.getElementById('cedar-tooltip');
+    tooltip.style.top = event.pageY+10 + "px";
+    tooltip.style.left = event.pageX+10 + "px";
+    tooltip.style.display = "none";
+  });
+
+```
+{{/markdown}}
+<script>
+
+  var tornados = {"features":[{"attributes":{"Injuries":1733,"Fatalities":271,"Date":-504921600000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":-473385600000}},{"attributes":{"Injuries":553,"Fatalities":100,"Date":-441849600000}},{"attributes":{"Injuries":340,"Fatalities":18,"Date":-410227200000}},{"attributes":{"Injuries":316,"Fatalities":55,"Date":-378691200000}},{"attributes":{"Injuries":74,"Fatalities":21,"Date":-347155200000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":-315619200000}},{"attributes":{"Injuries":81,"Fatalities":5,"Date":-283996800000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":-252460800000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":-220924800000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":-189388800000}},{"attributes":{"Injuries":161,"Fatalities":11,"Date":-157766400000}},{"attributes":{"Injuries":1,"Fatalities":0,"Date":-126230400000}},{"attributes":{"Injuries":1140,"Fatalities":80,"Date":-94694400000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":-63158400000}},{"attributes":{"Injuries":861,"Fatalities":34,"Date":-31536000000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":0}},{"attributes":{"Injuries":500,"Fatalities":26,"Date":31536000000}},{"attributes":{"Injuries":510,"Fatalities":47,"Date":63072000000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":94694400000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":126230400000}},{"attributes":{"Injuries":2445,"Fatalities":148,"Date":157766400000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":189302400000}},{"attributes":{"Injuries":84,"Fatalities":2,"Date":220924800000}},{"attributes":{"Injuries":130,"Fatalities":22,"Date":252460800000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":283996800000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":315532800000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":347155200000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":378691200000}},{"attributes":{"Injuries":29,"Fatalities":0,"Date":410227200000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":441763200000}},{"attributes":{"Injuries":200,"Fatalities":9,"Date":473385600000}},{"attributes":{"Injuries":310,"Fatalities":18,"Date":504921600000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":536457600000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":567993600000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":599616000000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":631152000000}},{"attributes":{"Injuries":410,"Fatalities":31,"Date":662688000000}},{"attributes":{"Injuries":225,"Fatalities":17,"Date":694224000000}},{"attributes":{"Injuries":35,"Fatalities":1,"Date":725846400000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":757382400000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":788918400000}},{"attributes":{"Injuries":0,"Fatalities":0,"Date":820454400000}},{"attributes":{"Injuries":12,"Fatalities":0,"Date":852076800000}},{"attributes":{"Injuries":12,"Fatalities":27,"Date":883612800000}},{"attributes":{"Injuries":295,"Fatalities":35,"Date":915148800000}},{"attributes":{"Injuries":583,"Fatalities":36,"Date":946684800000}}]};
+  
+  var chart = new Cedar({"type":"time"});
+
+  var dataset = {
+    "data": tornados,
+    "mappings":{
+      "time": {"field":"Date"},
+      "value": {"field":"Injuries"},
+      "sort":"Date"
+
+    }
+  };
+  var tooltip = {
+    "title": "{Date}",
+    "content": "{Injuries} injuries<br/>{Fatalities} fatalities"
+  };
+
+  chart.dataset = dataset;
+  //chart.dataset.mappings.sort = "DATE";
+  chart.show({
+    elementId: "#chart",
+    autolabels: false
+  }); 
+
+  chart.on('mouseover', function(event,data){
+    console.log("event", event);
+    console.log("data", data);
+
+    var cedartip = document.getElementById('cedar-tooltip');
+    cedartip.style.top = event.pageY + "px";
+    cedartip.style.left = event.pageX + "px";
+    cedartip.style.display = "block";
+    var content = "<span class='title'>" + tooltip.title + "</span><br />";
+    content += "<p class='content'>" + tooltip.content + "</p>";
+
+    cedartip.innerHTML = content.replace( /\{(\w+)\}/g, function replacer(match, $1){
+      if ($1 === 'Date') {
+        return new Date(data[$1]).getFullYear();
+      }
+      return data[$1];
+    });
+  });
+  chart.on('mouseout', function(event,data){
+    var tooltip = document.getElementById('cedar-tooltip');
+    tooltip.style.top = event.pageY+10 + "px";
+    tooltip.style.left = event.pageX+10 + "px";
+    tooltip.style.display = "none";
+  });
 
 </script>
